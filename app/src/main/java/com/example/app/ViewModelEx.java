@@ -23,7 +23,6 @@ public class ViewModelEx extends ViewModel {
             list = new MutableLiveData<>();
             list.setValue(new ArrayList<>());
         }
-        this.list.getValue().clear();
-        this.list.getValue().addAll(_list);
+        this.list.postValue(_list);
     }
 }

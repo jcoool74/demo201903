@@ -87,8 +87,6 @@ public class FragmentEx extends Fragment {
         mAdapter = new AdapterEx(viewModelEx);
         recyclerView.setAdapter(mAdapter);
 
-        Repo.xxx(this, () -> {
-            mAdapter.notifyDataSetChanged();
-        });
+        Repo.xxx(this);
     }
 }

@@ -14,7 +14,7 @@ import retrofit2.Retrofit;
 public class Repo {
     public static final String TAG = Repo.class.getSimpleName();
 
-    public static void xxx(Fragment fragment, Runnable runnable) {
+    public static void xxx(Fragment fragment) {
         Retrofit retrofit = APIClient.getClient();
         JobGithubService service = retrofit.create(JobGithubService.class);
         Call<List<Position>> call = service.positions("java");
@@ -28,8 +28,6 @@ public class Repo {
 
                 ViewModelEx viewModelEx = ViewModelProviders.of(fragment).get(ViewModelEx.class);
                 viewModelEx.addList(body);
-
-                runnable.run();
             }
 
             @Override
