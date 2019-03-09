@@ -1,6 +1,4 @@
-package com.example.app.com.example.app.github;
-
-import com.example.app.com.example.app.github.data.model.job_list.Position;
+package com.example.app;
 
 import java.util.List;
 

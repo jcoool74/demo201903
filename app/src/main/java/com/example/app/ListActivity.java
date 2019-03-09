@@ -1,15 +1,13 @@
 package com.example.app;
 
-import android.app.Activity;
-import android.app.FragmentManager;
-import android.app.FragmentTransaction;
+import android.support.v4.app.FragmentManager;
 import android.databinding.DataBindingUtil;
-import android.databinding.ViewDataBinding;
+
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
 import com.example.app.databinding.ActivityListBinding;
-import com.vogella.android.databinding.TemperatureData;
 
 public class ListActivity extends AppCompatActivity {
 
@@ -21,17 +19,17 @@ public class ListActivity extends AppCompatActivity {
             setContentView(R.layout.activity_list);
         } else {
             ActivityListBinding binding = DataBindingUtil.setContentView(this, R.layout.activity_list);
-            TemperatureData temperatureData = new TemperatureData("Hamburg", "10");
-            binding.setTemp(temperatureData);
+            Position position = new Position();
+            binding.setPosition(position);
         }
 
         test();
     }
 
     private void test() {
-        FragmentManager fm = getFragmentManager();
+        FragmentManager fm = getSupportFragmentManager();
         FragmentTransaction ft = fm.beginTransaction();
-        ft.add(R.id.fragment_container, new YourFragment());
+        ft.add(R.id.fragment_container, new FragmentEx());
         ft.commit();
     }
 }

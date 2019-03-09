@@ -46,4 +46,9 @@ dependencies {
     implementation 'com.squareup.retrofit2:converter-gson:2.3.0'
     implementation 'com.android.support:recyclerview-v7:27.1.1'
 
+    // Lifecycle components
+    implementation 'android.arch.lifecycle:extensions:1.1.1'
+    annotationProcessor 'android.arch.lifecycle:compiler:1.1.1'
 }
+
+// https://github.com/jcoool74/demo201903

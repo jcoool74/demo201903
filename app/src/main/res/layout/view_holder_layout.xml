@@ -5,9 +5,7 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
-        <variable
-            name="obj"
-            type="com.vogella.android.databinding.TemperatureData" />
+        <variable name="position" type="com.example.app.Position"/>
     </data>
 
     <android.support.constraint.ConstraintLayout
@@ -34,7 +32,7 @@
             android:layout_gravity="top|start"
             android:layout_marginTop="8dp"
             android:layout_weight="1"
-            android:text="@{obj.location}"
+            android:text="@{position.company}"
             app:layout_constraintBottom_toTopOf="@+id/itemDescription"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.5"

@@ -1,4 +1,4 @@
-package com.example.app.com.example.app.github;
+package com.example.app;
 
 import android.util.Log;
 

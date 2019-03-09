@@ -1,13 +1,10 @@
 package com.example.app;
 
+import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
-
-import com.example.app.com.example.app.github.APIClient;
-import com.example.app.com.example.app.github.JobGithubService;
-import com.example.app.com.example.app.github.data.model.job_list.Position;
 
 import java.util.List;
 
@@ -24,25 +21,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        //test();
         startActivity(new Intent(this, ListActivity.class));
     }
 
-    private void test() {
-        Retrofit retrofit = APIClient.getClient();
-        JobGithubService service = retrofit.create(JobGithubService.class);
-        Call<List<Position>> call = service.positions("java");
-        call.enqueue(new Callback<List<Position>>() {
-            @Override
-            public void onResponse(Call<List<Position>> call, Response<List<Position>> response) {
-                Log.d(TAG, "sldkjlskjf");
-            }
-
-            @Override
-            public void onFailure(Call<List<Position>> call, Throwable t) {
-                Log.d(TAG, "22222");
-
-            }
-        });
-    }
 }
