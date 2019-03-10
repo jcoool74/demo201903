@@ -66,9 +66,6 @@ public class FragmentEx extends Fragment {
         // define an adapter
         mAdapter = new AdapterEx(positionViewModel);
         recyclerView.setAdapter(mAdapter);
-
-        if (true) {
-        }
     }
 
     private void slskjdlskfs() {

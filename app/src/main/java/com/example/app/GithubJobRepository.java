@@ -4,18 +4,19 @@ import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.MutableLiveData;
 
 import java.util.List;
+import java.util.Observable;
+
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.schedulers.Schedulers;
 
 
 public class GithubJobRepository {
     public static final String TAG = GithubJobRepository.class.getSimpleName();
 
-    public static LiveData<List<Position>> getPositions(String key) {
-        MutableLiveData<List<Position>> mutableLiveData = new MutableLiveData();
-
-        LiveData<List<Position>> liveData = GithubJobRemoteDataSource.getInstance().getPositions(key);
-        mutableLiveData.setValue(liveData.getValue());
-
-        return mutableLiveData;
+    public static io.reactivex.Observable<List<Position>> getPositions(String key) {
+        GithubJobRemoteDataSource remoteDataSource = GithubJobRemoteDataSource.getInstance();
+        io.reactivex.Observable<List<Position>> positionListObservable = remoteDataSource.getPositionListObservable(key);
+        return positionListObservable;
     }
 
 }
