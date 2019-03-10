@@ -6,12 +6,8 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
 
-import java.util.ArrayList;
-import java.util.List;
-
 public class AdapterEx extends RecyclerView.Adapter<AdapterEx.ViewHolderEx> {
-    private ViewModelEx viewModelEx;
-
+    private PositionViewModel positionViewModel;
 
     // Provide a reference to the views for each data item
     // Complex data items may need more than one view per item, and
@@ -32,8 +28,8 @@ public class AdapterEx extends RecyclerView.Adapter<AdapterEx.ViewHolderEx> {
     }
 
     // Provide a suitable constructor (depends on the kind of dataset)
-    public AdapterEx(ViewModelEx viewModelEx) {
-        this.viewModelEx = viewModelEx;
+    public AdapterEx(PositionViewModel positionViewModel) {
+        this.positionViewModel = positionViewModel;
     }
 
     // Create new views (invoked by the layout manager)
@@ -46,25 +42,17 @@ public class AdapterEx extends RecyclerView.Adapter<AdapterEx.ViewHolderEx> {
         return new ViewHolderEx(binding);
     }
 
-    // Replace the contents of a view (invoked by the layout manager)
     @Override
     public void onBindViewHolder(ViewHolderEx holder, int position) {
-        Position _position = null;
-
-            _position = viewModelEx.getList().getValue().get(position);
-
-
+        Position _position;
+        _position = positionViewModel.getPositions().getValue().get(position);
         holder.bind(_position);
     }
 
-    // Return the size of your dataset (invoked by the layout manager)
     @Override
     public int getItemCount() {
         int count;
-
-            count = viewModelEx.getList().getValue().size();
-
-        //return data.size();
+        count = positionViewModel.getPositions().getValue().size();
         return count;
     }
 

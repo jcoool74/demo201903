@@ -17,13 +17,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import java.util.Arrays;
 import java.util.List;
-
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
-import retrofit2.Retrofit;
 
 //https://guides.codepath.com/android/creating-and-using-fragments
 //https://developer.android.com/guide/topics/ui/layout/recyclerview#java
@@ -35,7 +29,7 @@ public class FragmentEx extends Fragment {
     private RecyclerView recyclerView;
     private RecyclerView.Adapter mAdapter;
     private RecyclerView.LayoutManager layoutManager;
-    ViewModelEx viewModelEx;
+    private PositionViewModel positionViewModel;
 
     @Nullable
     @Override
@@ -50,18 +44,10 @@ public class FragmentEx extends Fragment {
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        viewModelEx = ViewModelProviders.of(this).get(ViewModelEx.class);
-        viewModelEx.getList().observe(this, new Observer<List<Position>>() {
-            @Override
-            public void onChanged(@Nullable List<Position> temperatureData) {
-                Log.d(TAG, "onChanged");
-                mAdapter.notifyDataSetChanged();
-            }
-        });
+        positionViewModel = ViewModelProviders.of(this).get(PositionViewModel.class);
+        slskjdlskfs();
 
-        if (true) {
-            setAdapter(view);
-        }
+        setAdapter(view);
     }
 
 
@@ -77,16 +63,21 @@ public class FragmentEx extends Fragment {
         layoutManager = new LinearLayoutManager(getContext());
         recyclerView.setLayoutManager(layoutManager);
 
-        Position hamburg = new Position();
-        hamburg.setCompany("Samsung");
-
-        Position berlin = new Position();
-        berlin.setCompany("LG");
-
         // define an adapter
-        mAdapter = new AdapterEx(viewModelEx);
+        mAdapter = new AdapterEx(positionViewModel);
         recyclerView.setAdapter(mAdapter);
 
-        Repo.xxx(this);
+        if (true) {
+        }
+    }
+
+    private void slskjdlskfs() {
+        positionViewModel.getPositions().observe(this, new Observer<List<Position>>() {
+            @Override
+            public void onChanged(@Nullable List<Position> temperatureData) {
+                Log.d(TAG, "onChanged");
+                mAdapter.notifyDataSetChanged();
+            }
+        });
     }
 }
