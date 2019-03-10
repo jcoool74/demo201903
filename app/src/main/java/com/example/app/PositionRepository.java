@@ -40,4 +40,29 @@ public class PositionRepository {
 
         return data;
     }
+
+    public static LiveData<List<Position>> getPositions_(String key) {
+        MutableLiveData<List<Position>> data = new MutableLiveData();
+
+        Retrofit retrofit = APIClient.getClient();
+        GithubJobWebService webService = retrofit.create(GithubJobWebService.class);
+        Call<List<Position>> call = webService.getPositions(key);
+        call.enqueue(new Callback<List<Position>>() {
+            @Override
+            public void onResponse(Call<List<Position>> call, Response<List<Position>> response) {
+                List<Position> _list = response.body();
+                for (Position position : _list) {
+                    Log.d(TAG, "onResponse - position: " + position.getTitle());
+                }
+                data.setValue(_list);
+            }
+
+            @Override
+            public void onFailure(Call<List<Position>> call, Throwable t) {
+                Log.d(TAG, "onFailure");
+            }
+        });
+
+        return data;
+    }
 }
