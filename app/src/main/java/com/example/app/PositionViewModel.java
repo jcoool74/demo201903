@@ -15,8 +15,12 @@ public class PositionViewModel extends ViewModel {
             mutableLiveData = new MutableLiveData<>();
             mutableLiveData.setValue(new ArrayList<>());
         }
-//        LiveData<List<Position>> list = PositionRepository.getPositions("Android");
-//        mutableLiveData.setValue(list.getValue());
+
+        if (false) {
+            LiveData<List<Position>> list = GithubJobRepository.getPositions("Android");
+            mutableLiveData.setValue(list.getValue());
+        }
+
         return mutableLiveData;
     }
 }
