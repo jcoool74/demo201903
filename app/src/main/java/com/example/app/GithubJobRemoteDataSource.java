@@ -1,10 +1,12 @@
 package com.example.app;
 
-import android.arch.lifecycle.LiveData;
-import android.arch.lifecycle.MutableLiveData;
+import android.os.Build;
 import android.util.Log;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 import io.reactivex.Observable;
 import io.reactivex.ObservableEmitter;
@@ -17,6 +19,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public class GithubJobRemoteDataSource {
     private GithubJobWebService webService;
+    private static final int NUM_ITEMS_IN_PAGE = 10;
 
     private static class Holder {
         private static GithubJobRemoteDataSource INSTANCE = new GithubJobRemoteDataSource();
@@ -35,7 +38,7 @@ public class GithubJobRemoteDataSource {
         webService = retrofit.create(GithubJobWebService.class);
     }
 
-    public Observable<List<Position>> getPositionListObservable(String key) {
+    public Observable<List<Position>> getPositionListObservable(String key, int offset) {
         Observable<List<Position>> observable = Observable.create(new ObservableOnSubscribe<List<Position>>() {
             @Override
             public void subscribe(ObservableEmitter<List<Position>> emitter) throws Exception {
@@ -43,18 +46,38 @@ public class GithubJobRemoteDataSource {
                 call.enqueue(new Callback<List<Position>>() {
                     @Override
                     public void onResponse(Call<List<Position>> call, Response<List<Position>> response) {
-                        List<Position> body = response.body();
-                        Log.d(Config.TAG, "emitter-res: " + body.size());
+                        List<Position> listSrc = response.body();
+                        Log.d(Config.TAG, "emitter-res: " + listSrc.size());
 
-                        if (!body.isEmpty()) {
-                            Position position = body.get(0);
+                        if (!listSrc.isEmpty()) {
+                            Position position = listSrc.get(0);
                             String companyLogo = position.getCompanyLogo();
                             Log.d(Config.TAG, "companyLogo: " + companyLogo);
                         }
 
-                        body.add(null);
+                        if (offset >= listSrc.size()) {
+                            emitter.onNext(new ArrayList<>());
+                            return;
+                        }
 
-                        emitter.onNext(body);
+                        List<Position> listDes = new ArrayList<>();
+                        int size = listSrc.size();
+                        size = Math.min(size, (offset + NUM_ITEMS_IN_PAGE));
+
+                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+                            listDes = IntStream.range(0, size).mapToObj(i -> listSrc.get(i)).collect(Collectors.toList());
+                        } else {
+                            for (int i = 0; i < size; i++) {
+                                listDes.add(listSrc.get(i));
+                            }
+                        }
+
+                        if (Config.ADD_NULL_PROGRESS) {
+                            listSrc.add(null);
+                        }
+
+                        Log.d(Config.TAG, "start: " + offset + ", end: " + size);
+                        emitter.onNext(listDes);
                     }
 
                     @Override
@@ -67,35 +90,4 @@ public class GithubJobRemoteDataSource {
         });
         return observable;
     }
-
-    public LiveData<List<Position>> getPositionListLiveData(String key) {
-        MutableLiveData<List<Position>> data = new MutableLiveData();
-
-        Call<List<Position>> call = webService.getPositions(key);
-        call.enqueue(new Callback<List<Position>>() {
-            @Override
-            public void onResponse(Call<List<Position>> call, Response<List<Position>> response) {
-                List<Position> _list = response.body();
-                Log.d(Config.TAG, "onResponse - _list: " + _list.size());
-
-                for (Position position : _list) {
-                    Log.d(Config.TAG, "onResponse - position: " + position.getTitle());
-                }
-
-                _list.add(null);
-                Log.d(Config.TAG, "onResponse - _list: " + _list.size());
-
-                data.setValue(_list);
-            }
-
-            @Override
-            public void onFailure(Call<List<Position>> call, Throwable t) {
-                Log.d(Config.TAG, "onFailure");
-            }
-        });
-
-        return data;
-    }
-
-
 }

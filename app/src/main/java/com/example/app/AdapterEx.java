@@ -69,7 +69,7 @@ public class AdapterEx extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
         Position _position;
         _position = positionViewModel.getPositions().getValue().get(position);
 
-        Log.d(Config.TAG, "onBindViewHolder - _position: " + _position);
+        //Log.d(Config.TAG, "onBindViewHolder - _position: " + _position);
 
         if (holder instanceof ViewHolderEx) {
             ((ViewHolderEx) holder).bind(_position);
@@ -98,7 +98,7 @@ public class AdapterEx extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     @Override
     public int getItemViewType(int position) {
         Position _position = positionViewModel.getPositions().getValue().get(position);
-        Log.d(Config.TAG, "getItemViewType - _position: " + _position);
+        //Log.d(Config.TAG, "getItemViewType - _position: " + _position);
         return _position == null ? VIEW_TYPE_LOADING : VIEW_TYPE_ITEM;
     }
 
