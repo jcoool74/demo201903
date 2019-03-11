@@ -133,6 +133,7 @@ public class Position extends BaseObservable {
         this.title = title;
     }
 
+    @Bindable
     public String getDescription() {
         return description;
     }
