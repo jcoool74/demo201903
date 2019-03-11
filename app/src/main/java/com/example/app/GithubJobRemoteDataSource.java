@@ -44,8 +44,16 @@ public class GithubJobRemoteDataSource {
                 call.enqueue(new Callback<List<Position>>() {
                     @Override
                     public void onResponse(Call<List<Position>> call, Response<List<Position>> response) {
-                        Log.d(Config.TAG, "emitter-res: " + response.body().size());
-                        emitter.onNext(response.body());
+                        List<Position> body = response.body();
+                        Log.d(Config.TAG, "emitter-res: " + body.size());
+
+                        if (!body.isEmpty()) {
+                            Position position = body.get(0);
+                            String companyLogo = position.getCompanyLogo();
+                            Log.d(Config.TAG, "companyLogo: " + companyLogo);
+                        }
+
+                        emitter.onNext(body);
                     }
 
                     @Override

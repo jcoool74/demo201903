@@ -2,7 +2,11 @@ package com.example.app;
 
 import android.databinding.BaseObservable;
 import android.databinding.Bindable;
+import android.databinding.BindingAdapter;
+import android.widget.ImageView;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
@@ -150,12 +154,18 @@ public class Position extends BaseObservable {
         this.howToApply = howToApply;
     }
 
+    @Bindable
     public String getCompanyLogo() {
         return companyLogo;
     }
 
     public void setCompanyLogo(String companyLogo) {
         this.companyLogo = companyLogo;
+    }
+
+    @BindingAdapter("imageUrl")
+    public static void loadImage(ImageView imageView, String url) {
+        Glide.with(imageView.getContext()).load(url).apply(RequestOptions.circleCropTransform()).into(imageView);
     }
 
 }
