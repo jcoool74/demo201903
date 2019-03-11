@@ -16,7 +16,6 @@ import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
 public class GithubJobRemoteDataSource {
-    private static final String TAG = GithubJobRemoteDataSource.class.getSimpleName();
     private GithubJobWebService webService;
 
     private static class Holder {
@@ -53,6 +52,8 @@ public class GithubJobRemoteDataSource {
                             Log.d(Config.TAG, "companyLogo: " + companyLogo);
                         }
 
+                        body.add(null);
+
                         emitter.onNext(body);
                     }
 
@@ -75,15 +76,21 @@ public class GithubJobRemoteDataSource {
             @Override
             public void onResponse(Call<List<Position>> call, Response<List<Position>> response) {
                 List<Position> _list = response.body();
+                Log.d(Config.TAG, "onResponse - _list: " + _list.size());
+
                 for (Position position : _list) {
-                    Log.d(TAG, "onResponse - position: " + position.getTitle());
+                    Log.d(Config.TAG, "onResponse - position: " + position.getTitle());
                 }
+
+                _list.add(null);
+                Log.d(Config.TAG, "onResponse - _list: " + _list.size());
+
                 data.setValue(_list);
             }
 
             @Override
             public void onFailure(Call<List<Position>> call, Throwable t) {
-                Log.d(TAG, "onFailure");
+                Log.d(Config.TAG, "onFailure");
             }
         });
 
