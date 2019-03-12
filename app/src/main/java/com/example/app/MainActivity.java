@@ -1,17 +1,10 @@
 package com.example.app;
 
-import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
 
-import java.util.List;
-
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
-import retrofit2.Retrofit;
+import com.example.app.tab.ActivityTabLayout;
 
 public class MainActivity extends AppCompatActivity {
     public static final String TAG = "_MainActivity_";
@@ -21,7 +14,12 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        startActivity(new Intent(this, ListActivity.class));
+        if (false) {
+            startActivity(new Intent(this, ListActivity.class));
+        } else {
+            startActivity(new Intent(this, ActivityTabLayout.class));
+        }
+
     }
 
 }
