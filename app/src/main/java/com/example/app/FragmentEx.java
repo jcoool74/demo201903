@@ -79,6 +79,7 @@ public class FragmentEx extends Fragment {
                 Log.d(Config.TAG, "onChanged");
                 lastItem = list.size() - 1;
                 mAdapter.notifyDataSetChanged();
+                isLoading = false;
             }
         });
     }
@@ -117,7 +118,10 @@ public class FragmentEx extends Fragment {
             mAdapter.notifyItemInserted(positionViewModel.getMutableLiveData().getValue().size() - 1);
         }
 
-        Log.d(Config.TAG, "loadMore - loadMore: " + (lastItem + 1));
-        positionViewModel.getPositions(lastItem + 1);
+        if (!isLoading) {
+            Log.d(Config.TAG, "loadMore - loadMore: " + (lastItem + 1));
+            positionViewModel.getPositions(lastItem + 1);
+            isLoading = true;
+        }
     }
 }

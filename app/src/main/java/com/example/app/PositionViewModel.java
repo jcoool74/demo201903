@@ -1,5 +1,6 @@
 package com.example.app;
 
+import android.annotation.SuppressLint;
 import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.MutableLiveData;
 import android.arch.lifecycle.ViewModel;
@@ -26,6 +27,7 @@ public class PositionViewModel extends ViewModel {
         return mutableLiveData;
     }
 
+    @SuppressLint("CheckResult")
     public LiveData<List<Position>> getPositions(int offset) {
         if (mutableLiveData == null) {
             mutableLiveData = new MutableLiveData<>();
@@ -33,7 +35,7 @@ public class PositionViewModel extends ViewModel {
         }
 
         GithubJobRepository.getPositions("Java", offset).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe(positions -> {
-            Log.d(Config.TAG, "sub: " + positions.size());
+            Log.d(Config.TAG, "subscribe: " + positions.size());
             mutableLiveData.postValue(positions);
         }, err -> {
             // do something

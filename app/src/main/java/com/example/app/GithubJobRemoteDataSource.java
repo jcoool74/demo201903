@@ -47,42 +47,22 @@ public class GithubJobRemoteDataSource {
                     @Override
                     public void onResponse(Call<List<Position>> call, Response<List<Position>> response) {
                         List<Position> listSrc = response.body();
-                        Log.d(Config.TAG, "emitter-res: " + listSrc.size());
+                        //Log.d(Config.TAG, "onResponse - emitter - listSrc size: " + listSrc.size());
 
                         if (!listSrc.isEmpty()) {
                             Position position = listSrc.get(0);
                             String companyLogo = position.getCompanyLogo();
-                            Log.d(Config.TAG, "companyLogo: " + companyLogo);
+                            //Log.d(Config.TAG, "companyLogo: " + companyLogo);
                         }
 
-                        if (offset >= listSrc.size()) {
-                            emitter.onNext(new ArrayList<>());
-                            return;
-                        }
-
-                        List<Position> listDes = new ArrayList<>();
-                        int size = listSrc.size();
-                        size = Math.min(size, (offset + NUM_ITEMS_IN_PAGE));
-
-                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-                            listDes = IntStream.range(0, size).mapToObj(i -> listSrc.get(i)).collect(Collectors.toList());
-                        } else {
-                            for (int i = 0; i < size; i++) {
-                                listDes.add(listSrc.get(i));
-                            }
-                        }
-
-                        if (Config.ADD_NULL_PROGRESS) {
-                            listSrc.add(null);
-                        }
-
+                        int size = Math.min(listSrc.size(), (offset + NUM_ITEMS_IN_PAGE));
                         Log.d(Config.TAG, "start: " + offset + ", end: " + size);
-                        emitter.onNext(listDes);
+                        emitter.onNext(listSrc.subList(0, size));
                     }
 
                     @Override
                     public void onFailure(Call<List<Position>> call, Throwable t) {
-                        Log.d(Config.TAG, "emitter-err: " + t.getMessage());
+                        Log.d(Config.TAG, "onFailure - emitter: " + t.getMessage());
                         emitter.onError(t);
                     }
                 });
