@@ -24,10 +24,15 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        if (true) {
+        if (false) {
             startActivity(new Intent(this, ListActivity.class));
         } else {
-            startActivity(new Intent(this, ActivityTabLayout.class));
+            if (false) {
+                startActivity(new Intent(this, ActivityTabLayout.class));
+            } else {
+                startActivity(new Intent(this, DetailActivity.class));
+            }
+
         }
 
         testRoom();
