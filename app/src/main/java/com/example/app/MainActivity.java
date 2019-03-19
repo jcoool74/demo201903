@@ -6,6 +6,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 
+import com.example.app.apple.AppleActivity;
 import com.example.app.room.Injection;
 import com.example.app.room.ViewModelFactory;
 import com.example.app.room.WordViewModel;
@@ -24,13 +25,17 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        if (false) {
+        if (true) {
             startActivity(new Intent(this, ListActivity.class));
         } else {
             if (false) {
                 startActivity(new Intent(this, ActivityTabLayout.class));
             } else {
-                startActivity(new Intent(this, DetailActivity.class));
+                if (false) {
+                    startActivity(new Intent(this, DetailActivity.class));
+                } else {
+                    startActivity(new Intent(this, AppleActivity.class));
+                }
             }
 
         }

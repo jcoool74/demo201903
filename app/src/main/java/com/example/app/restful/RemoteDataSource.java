@@ -1,12 +1,12 @@
-package com.example.app;
+package com.example.app.restful;
 
-import android.os.Build;
 import android.util.Log;
 
-import java.util.ArrayList;
+import com.example.app.Config;
+import com.example.app.OkHttpUtil;
+import com.example.app.Position;
+
 import java.util.List;
-import java.util.stream.Collectors;
-import java.util.stream.IntStream;
 
 import io.reactivex.Observable;
 import io.reactivex.ObservableEmitter;
@@ -17,25 +17,25 @@ import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
-public class GithubJobRemoteDataSource {
-    private GithubJobWebService webService;
+public class RemoteDataSource {
+    private WebService webService;
     private static final int NUM_ITEMS_IN_PAGE = 10;
 
     private static class Holder {
-        private static GithubJobRemoteDataSource INSTANCE = new GithubJobRemoteDataSource();
+        private static RemoteDataSource INSTANCE = new RemoteDataSource();
     }
 
-    public static GithubJobRemoteDataSource getInstance() {
+    public static RemoteDataSource getInstance() {
         return Holder.INSTANCE;
     }
 
-    private GithubJobRemoteDataSource() {
+    private RemoteDataSource() {
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl("https://jobs.github.com")
                 .addConverterFactory(GsonConverterFactory.create())
                 .client(OkHttpUtil.get())
                 .build();
-        webService = retrofit.create(GithubJobWebService.class);
+        webService = retrofit.create(WebService.class);
     }
 
     public Observable<List<Position>> getPositionListObservable(String key, int offset) {
