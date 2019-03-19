@@ -9,7 +9,7 @@ import com.example.app.Position;
 //https://developer.android.com/topic/libraries/data-binding/architecture
 //https://developer.android.com/topic/libraries/architecture/viewmodel
 public class AppleViewModel extends ViewModel {
-    MutableLiveData<Position> positionLiveData = new MutableLiveData<>();
+    private MutableLiveData<Position> positionLiveData = new MutableLiveData<>();
 
     public AppleViewModel() {
         Position value = new Position();

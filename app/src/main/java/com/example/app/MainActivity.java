@@ -11,6 +11,7 @@ import com.example.app.room.Injection;
 import com.example.app.room.ViewModelFactory;
 import com.example.app.room.WordViewModel;
 import com.example.app.tab.ActivityTabLayout;
+import com.example.app.ui.TestActivity;
 
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
@@ -26,7 +27,11 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         if (true) {
-            startActivity(new Intent(this, ListActivity.class));
+            if (false) {
+                startActivity(new Intent(this, ListActivity.class));
+            } else {
+                startActivity(new Intent(this, TestActivity.class));
+            }
         } else {
             if (false) {
                 startActivity(new Intent(this, ActivityTabLayout.class));
@@ -37,7 +42,6 @@ public class MainActivity extends AppCompatActivity {
                     startActivity(new Intent(this, AppleActivity.class));
                 }
             }
-
         }
 
         testRoom();
