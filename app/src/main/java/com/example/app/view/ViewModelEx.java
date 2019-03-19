@@ -6,8 +6,10 @@ import android.arch.lifecycle.ViewModel;
 import android.databinding.Bindable;
 import android.databinding.Observable;
 import android.databinding.PropertyChangeRegistry;
+import android.util.Log;
 
 import com.example.app.BR;
+import com.example.app.Config;
 import com.example.app.model.JobPosting;
 import com.example.app.repository._Repository;
 
@@ -17,6 +19,7 @@ import io.reactivex.Flowable;
 import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
+
 /*
 Bind layout views to Architecture Components
 https://developer.android.com/topic/libraries/data-binding/architecture
@@ -45,8 +48,10 @@ public class ViewModelEx extends ViewModel implements Observable {
         List<JobPosting> value = list.getValue();
         if (value != null && !value.isEmpty()) {
             JobPosting jobPosting = value.get(0);
+            Log.d(Config.TAG, "getName: " + jobPosting.getCompany());
             return jobPosting.getCompany();
         }
+        Log.d(Config.TAG, "getName - default");
         return "hello_world_cup";
     }
 
@@ -55,12 +60,17 @@ public class ViewModelEx extends ViewModel implements Observable {
     }
 
     public Flowable<List<JobPosting>> _getList() {
+        Log.d(Config.TAG, "_getList");
         Flowable<List<JobPosting>> flowable = repository.getList("java", 0);
         Disposable disposable = flowable.subscribeOn(Schedulers.io()).observeOn(Schedulers.io()).subscribe(next -> {
-            list.setValue(next);
-            notifyPropertyChanged(BR.viewModel);
+            Log.d(Config.TAG, "_getList - next: " + next.size());
+            list.postValue(next);
+            notifyChange();
+//            notifyPropertyChanged(BR.viewModelEx);
         }, error -> {
+            Log.d(Config.TAG, "_getList - err: " + error.getMessage());
         }, () -> {
+            Log.d(Config.TAG, "_getList - complete");
         });
         compositeDisposable.add(disposable);
         return flowable;

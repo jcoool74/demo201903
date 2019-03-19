@@ -31,7 +31,7 @@ public class _Repository {
             try {
                 Log.d(Config.TAG, "getList - from remoteDataSource: " + result.size());
                 dao.insert(result);
-                //test();
+                test();
             } catch (Exception e) {
                 e.printStackTrace();
                 Log.d(Config.TAG, "getList - e", e);

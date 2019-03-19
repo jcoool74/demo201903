@@ -11,6 +11,7 @@ import com.example.app.room.Injection;
 import com.example.app.room.ViewModelFactory;
 import com.example.app.room.WordViewModel;
 import com.example.app.tab.ActivityTabLayout;
+import com.example.app.ui.Main2Activity;
 import com.example.app.ui.TestActivity;
 
 import io.reactivex.android.schedulers.AndroidSchedulers;
@@ -30,6 +31,7 @@ public class MainActivity extends AppCompatActivity {
             if (false) {
                 startActivity(new Intent(this, ListActivity.class));
             } else {
+//                startActivity(new Intent(this, Main2Activity.class));
                 startActivity(new Intent(this, TestActivity.class));
             }
         } else {

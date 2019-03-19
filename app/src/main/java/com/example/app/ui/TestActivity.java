@@ -29,7 +29,7 @@ public class TestActivity extends AppCompatActivity {
         ActivityTestBinding binding = DataBindingUtil.setContentView(this, R.layout.activity_test);
         ViewModelEx viewModel = ViewModelProviders.of(this, factory).get(ViewModelEx.class);
 
-        binding.setViewModel(viewModel);
+        binding.setViewModelEx(viewModel);
         binding.setLifecycleOwner(this);
 
         viewModel.getList().observe(this, it -> {
