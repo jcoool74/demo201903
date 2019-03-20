@@ -1,4 +1,4 @@
-package com.example.app.tab;
+package com.example.app.ui.tab;
 
 import android.content.Context;
 import android.support.v4.app.Fragment;

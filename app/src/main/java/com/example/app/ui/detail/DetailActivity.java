@@ -1,23 +1,18 @@
-package com.example.app;
+package com.example.app.ui.detail;
 
-import android.arch.lifecycle.LiveData;
-import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
 import android.databinding.DataBindingUtil;
-import android.databinding.ViewDataBinding;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 
+import com.example.app.R;
 import com.example.app.databinding.ActivityDetailBinding;
-import com.example.app.view.ViewModelEx;
-import com.example.app.view._ViewModelFactory;
-
-import java.util.List;
+import com.example.app.viewmodel.ViewModelEx;
+import com.example.app.viewmodel._ViewModelFactory;
 
 public class DetailActivity extends AppCompatActivity {
 

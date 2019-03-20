@@ -5,13 +5,13 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
-        <variable name="jobPostingViewModel" type="com.example.app.view.ViewModelEx"/>
+        <variable name="jobPostingViewModel" type="com.example.app.viewmodel.ViewModelEx"/>
     </data>
 
     <android.support.constraint.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context=".ListActivity">
+        tools:context=".ui.list.ListActivity">
 
         <TextView
             android:visibility="gone"

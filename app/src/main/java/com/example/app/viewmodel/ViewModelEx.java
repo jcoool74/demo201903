@@ -1,4 +1,4 @@
-package com.example.app.view;
+package com.example.app.viewmodel;
 
 import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.MutableLiveData;
@@ -16,7 +16,6 @@ import com.example.app.model.JobPosting;
 import com.example.app.repository._Repository;
 
 import java.util.List;
-import java.util.jar.Attributes;
 
 import io.reactivex.Flowable;
 import io.reactivex.disposables.CompositeDisposable;

@@ -7,7 +7,7 @@
 
         <variable
             name="jobPostingViewModel"
-            type="com.example.app.view.ViewModelEx" />
+            type="com.example.app.viewmodel.ViewModelEx" />
 
     </data>
 
@@ -15,7 +15,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         app:layout_behavior="@string/appbar_scrolling_view_behavior"
-        tools:context=".DetailActivity"
+        tools:context=".ui.detail.DetailActivity"
         tools:showIn="@layout/activity_detail">
 
         <TextView

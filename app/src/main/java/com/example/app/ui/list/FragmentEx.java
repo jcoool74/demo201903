@@ -1,4 +1,4 @@
-package com.example.app;
+package com.example.app.ui.list;
 
 //import android.app.Fragment;
 
@@ -18,9 +18,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.example.app.R;
 import com.example.app.model.JobPosting;
 import com.example.app.util.Config;
-import com.example.app.view.ViewModelEx;
+import com.example.app.viewmodel.ViewModelEx;
 
 import java.util.List;
 

@@ -1,4 +1,4 @@
-package com.example.app;
+package com.example.app.ui.list;
 
 import android.arch.lifecycle.ViewModelProviders;
 import android.support.v4.app.FragmentManager;
@@ -8,9 +8,10 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
+import com.example.app.R;
 import com.example.app.databinding.ActivityListBinding;
-import com.example.app.view.ViewModelEx;
-import com.example.app.view._ViewModelFactory;
+import com.example.app.viewmodel.ViewModelEx;
+import com.example.app.viewmodel._ViewModelFactory;
 
 public class ListActivity extends AppCompatActivity {
 

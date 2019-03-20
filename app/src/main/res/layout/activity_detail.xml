@@ -5,7 +5,7 @@
     xmlns:bind="http://schemas.android.com/apk/res-auto">
 
     <data>
-        <variable name="jobPostingViewModel" type="com.example.app.view.ViewModelEx"/>
+        <variable name="jobPostingViewModel" type="com.example.app.viewmodel.ViewModelEx"/>
 
     </data>
 
@@ -13,7 +13,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:fitsSystemWindows="true"
-        tools:context=".DetailActivity">
+        tools:context=".ui.detail.DetailActivity">
 
         <android.support.design.widget.AppBarLayout
             android:id="@+id/app_bar"

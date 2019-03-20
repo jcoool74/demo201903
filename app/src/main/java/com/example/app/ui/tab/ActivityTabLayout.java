@@ -1,4 +1,4 @@
-package com.example.app.tab;
+package com.example.app.ui.tab;
 
 import android.net.Uri;
 import android.os.Bundle;
