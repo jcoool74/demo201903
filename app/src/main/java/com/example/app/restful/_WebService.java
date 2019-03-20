@@ -1,6 +1,5 @@
 package com.example.app.restful;
 
-import com.example.app.Position;
 import com.example.app.model.JobPosting;
 
 import java.util.List;

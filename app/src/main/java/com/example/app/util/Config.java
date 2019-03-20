@@ -1,4 +1,4 @@
-package com.example.app;
+package com.example.app.util;
 
 public class Config {
     public static final String TAG = "XYZ";

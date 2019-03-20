@@ -5,9 +5,7 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
-        <variable
-            name="position"
-            type="com.example.app.Position" />
+        <variable name="jobPosting" type="com.example.app.model.JobPosting"/>
     </data>
 
     <android.support.constraint.ConstraintLayout
@@ -20,7 +18,7 @@
             android:layout_height="50dp"
             android:layout_marginStart="16dp"
             android:layout_marginLeft="16dp"
-            app:imageUrl="@{position.companyLogo}"
+            app:imageUrl="@{jobPosting.companyLogo}"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
@@ -35,7 +33,7 @@
             android:layout_marginTop="16dp"
             android:layout_marginEnd="16dp"
             android:layout_weight="1"
-            android:text="@{position.company}"
+            android:text="@{jobPosting.company}"
             app:layout_constraintStart_toEndOf="@id/itemImage"
             app:layout_constraintTop_toTopOf="parent"
             tools:text="Main Text" />
@@ -52,7 +50,7 @@
             android:layout_weight="1"
             android:ellipsize="end"
             android:maxLines="5"
-            android:text="@{position.description}"
+            android:text="@{jobPosting.description}"
             app:layout_constraintStart_toEndOf="@+id/itemImage"
             app:layout_constraintTop_toBottomOf="@+id/tv_main"
             tools:text="Sub Text" />

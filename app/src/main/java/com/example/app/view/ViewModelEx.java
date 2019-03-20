@@ -3,17 +3,20 @@ package com.example.app.view;
 import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.MutableLiveData;
 import android.arch.lifecycle.ViewModel;
-import android.databinding.Bindable;
+import android.databinding.BindingAdapter;
 import android.databinding.Observable;
 import android.databinding.PropertyChangeRegistry;
 import android.util.Log;
+import android.widget.ImageView;
 
-import com.example.app.BR;
-import com.example.app.Config;
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
+import com.example.app.util.Config;
 import com.example.app.model.JobPosting;
 import com.example.app.repository._Repository;
 
 import java.util.List;
+import java.util.jar.Attributes;
 
 import io.reactivex.Flowable;
 import io.reactivex.disposables.CompositeDisposable;
@@ -44,38 +47,6 @@ public class ViewModelEx extends ViewModel implements Observable {
         compositeDisposable.dispose();
     }
 
-    public String getName() {
-        List<JobPosting> value = list.getValue();
-        if (value != null && !value.isEmpty()) {
-            JobPosting jobPosting = value.get(0);
-            Log.d(Config.TAG, "getName: " + jobPosting.getCompany());
-            return jobPosting.getCompany();
-        }
-        Log.d(Config.TAG, "getName - default");
-        return "hello_world_cup";
-    }
-
-    public LiveData<List<JobPosting>> getList() {
-        return list;
-    }
-
-    public Flowable<List<JobPosting>> _getList() {
-        Log.d(Config.TAG, "_getList");
-        Flowable<List<JobPosting>> flowable = repository.getList("java", 0);
-        Disposable disposable = flowable.subscribeOn(Schedulers.io()).observeOn(Schedulers.io()).subscribe(next -> {
-            Log.d(Config.TAG, "_getList - next: " + next.size());
-            list.postValue(next);
-            notifyChange();
-//            notifyPropertyChanged(BR.viewModelEx);
-        }, error -> {
-            Log.d(Config.TAG, "_getList - err: " + error.getMessage());
-        }, () -> {
-            Log.d(Config.TAG, "_getList - complete");
-        });
-        compositeDisposable.add(disposable);
-        return flowable;
-    }
-
     @Override
     public void addOnPropertyChangedCallback(OnPropertyChangedCallback callback) {
         callbacks.add(callback);
@@ -102,5 +73,83 @@ public class ViewModelEx extends ViewModel implements Observable {
      */
     void notifyPropertyChanged(int fieldId) {
         callbacks.notifyCallbacks(this, fieldId, null);
+    }
+
+    public String getName() {
+        String result = "getName";
+        List<JobPosting> value = list.getValue();
+        if (value != null && !value.isEmpty()) {
+            JobPosting jobPosting = value.get(0);
+            result = jobPosting.getCompany();
+        }
+        Log.d(Config.TAG, "getName: " + result);
+        return result;
+    }
+
+    public String getCompany() {
+        String result = "getCompany";
+        List<JobPosting> value = list.getValue();
+        if (value != null && !value.isEmpty()) {
+            JobPosting jobPosting = value.get(0);
+            result = jobPosting.getCompany();
+        }
+        Log.d(Config.TAG, "getCompany: " + result);
+        return result;
+    }
+
+    public String getDescription() {
+        String result = "getDescription";
+        List<JobPosting> value = list.getValue();
+        if (value != null && !value.isEmpty()) {
+            JobPosting jobPosting = value.get(0);
+            result = jobPosting.getDescription();
+        }
+        Log.d(Config.TAG, "getDescription: " + result);
+        return result;
+    }
+
+    public String getCompanyLogo() {
+        //companyLogo
+        String result = "https://cdn-images-1.medium.com/max/800/1*pqS__vR2bkJaPAh4OHP7OQ.png";
+        List<JobPosting> value = list.getValue();
+        if (value != null && !value.isEmpty()) {
+            JobPosting jobPosting = value.get(0);
+            result = jobPosting.getCompanyLogo();
+        }
+        Log.d(Config.TAG, "getDescription: " + result);
+        return result;
+    }
+
+    public LiveData<List<JobPosting>> getList() {
+        return list;
+    }
+
+    public LiveData<List<JobPosting>> getList(int offset) {
+        return list;
+    }
+
+    public Flowable<List<JobPosting>> _getList() {
+        Log.d(Config.TAG, "_getList");
+        Flowable<List<JobPosting>> flowable = repository.getList("java", 0);
+        Disposable disposable = flowable.subscribeOn(Schedulers.io()).observeOn(Schedulers.io()).subscribe(next -> {
+            Log.d(Config.TAG, "_getList - next: " + next.size());
+            list.postValue(next);
+            notifyChange();
+//            notifyPropertyChanged(BR.viewModelEx);
+        }, error -> {
+            Log.d(Config.TAG, "_getList - err: " + error.getMessage());
+        }, () -> {
+            Log.d(Config.TAG, "_getList - complete");
+        });
+        compositeDisposable.add(disposable);
+        return flowable;
+    }
+
+
+
+
+    @BindingAdapter("imageUrl")
+    public static void loadImage(ImageView imageView, String url) {
+        Glide.with(imageView.getContext()).load(url).apply(RequestOptions.circleCropTransform()).into(imageView);
     }
 }

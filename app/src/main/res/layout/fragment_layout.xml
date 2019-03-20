@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<layout xmlns:android="http://schemas.android.com/apk/res/android">
-    <data>
-        <variable name="position" type="com.example.app.Position"/>
-    </data>
+<!--<layout xmlns:android="http://schemas.android.com/apk/res/android">-->
+    <!--<data>-->
+        <!--<variable name="jobPostingViewModel" type="com.example.app.view.ViewModelEx"/>-->
+    <!--</data>-->
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical">
+<LinearLayout android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    xmlns:android="http://schemas.android.com/apk/res/android">
 
         <android.support.v7.widget.RecyclerView
             android:id="@+id/my_recycler_view"
@@ -17,4 +17,4 @@
             android:scrollbars="vertical" />
 
     </LinearLayout>
-</layout>
+<!--</layout>-->

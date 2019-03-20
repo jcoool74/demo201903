@@ -6,8 +6,6 @@ import android.arch.persistence.room.RoomDatabase;
 import android.content.Context;
 
 import com.example.app.model.JobPosting;
-import com.example.app.room.Word;
-import com.example.app.room.WordDao;
 
 //https://github.com/googlesamples/android-architecture-components/tree/master/BasicRxJavaSample
 

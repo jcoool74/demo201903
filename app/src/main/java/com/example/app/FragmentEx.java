@@ -18,6 +18,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.example.app.model.JobPosting;
+import com.example.app.util.Config;
+import com.example.app.view.ViewModelEx;
+
 import java.util.List;
 
 //https://guides.codepath.com/android/creating-and-using-fragments
@@ -30,7 +34,7 @@ public class FragmentEx extends Fragment {
     private RecyclerView recyclerView;
     private RecyclerView.Adapter mAdapter;
     private RecyclerView.LayoutManager layoutManager;
-    private PositionViewModel positionViewModel;
+    private ViewModelEx viewModel;
     private int lastItem;
     private boolean isLoading;
 
@@ -65,17 +69,17 @@ public class FragmentEx extends Fragment {
         recyclerView.setLayoutManager(layoutManager);
 
         // define an adapter
-        mAdapter = new AdapterEx(positionViewModel);
+        mAdapter = new AdapterEx(viewModel);
         recyclerView.setAdapter(mAdapter);
     }
 
     private void initViewModel() {
-        positionViewModel = ViewModelProviders.of(this).get(PositionViewModel.class);
+        viewModel = ViewModelProviders.of(getActivity()).get(ViewModelEx.class);
 
-        LiveData<List<Position>> positions = positionViewModel.getPositions(lastItem);
-        positions.observe(this, new Observer<List<Position>>() {
+        LiveData<List<JobPosting>> positions = viewModel.getList(lastItem);
+        positions.observe(this, new Observer<List<JobPosting>>() {
             @Override
-            public void onChanged(@Nullable List<Position> list) {
+            public void onChanged(@Nullable List<JobPosting> list) {
                 Log.d(Config.TAG, "onChanged");
                 lastItem = list.size() - 1;
                 mAdapter.notifyDataSetChanged();
@@ -98,7 +102,7 @@ public class FragmentEx extends Fragment {
                 //Log.d(Config.TAG, "onScrolled: " + (lastItem + 1));
 
                 if (!isLoading) {
-                    int size = positionViewModel.getMutableLiveData().getValue().size();
+                    int size = viewModel.getList().getValue().size();
                     LinearLayoutManager linearLayoutManager = (LinearLayoutManager) recyclerView.getLayoutManager();
 
                     if (linearLayoutManager != null && linearLayoutManager.findLastCompletelyVisibleItemPosition() == size - 1) {
@@ -114,13 +118,13 @@ public class FragmentEx extends Fragment {
 
     private void loadMore() {
         if (Config.ADD_NULL_PROGRESS) {
-            positionViewModel.getMutableLiveData().getValue().add(null);
-            mAdapter.notifyItemInserted(positionViewModel.getMutableLiveData().getValue().size() - 1);
+            viewModel.getList().getValue().add(null);
+            mAdapter.notifyItemInserted(viewModel.getList().getValue().size() - 1);
         }
 
         if (!isLoading) {
             Log.d(Config.TAG, "loadMore - loadMore: " + (lastItem + 1));
-            positionViewModel.getPositions(lastItem + 1);
+            viewModel.getList(lastItem + 1);
             isLoading = true;
         }
     }

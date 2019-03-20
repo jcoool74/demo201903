@@ -3,7 +3,7 @@ package com.example.app.repository;
 import android.annotation.SuppressLint;
 import android.util.Log;
 
-import com.example.app.Config;
+import com.example.app.util.Config;
 import com.example.app.model.JobPosting;
 import com.example.app.persistence.JobPostingDao;
 

@@ -2,8 +2,8 @@ package com.example.app.repository;
 
 import android.util.Log;
 
-import com.example.app.Config;
-import com.example.app.OkHttpUtil;
+import com.example.app.util.Config;
+import com.example.app.restful.OkHttpUtil;
 import com.example.app.model.JobPosting;
 import com.example.app.restful._WebService;
 
@@ -12,8 +12,6 @@ import java.util.List;
 import io.reactivex.BackpressureStrategy;
 import io.reactivex.Flowable;
 import io.reactivex.Observable;
-import io.reactivex.ObservableEmitter;
-import io.reactivex.ObservableOnSubscribe;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;

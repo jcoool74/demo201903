@@ -14,38 +14,22 @@ import android.support.v7.widget.Toolbar;
 import android.view.View;
 
 import com.example.app.databinding.ActivityDetailBinding;
+import com.example.app.view.ViewModelEx;
+import com.example.app.view._ViewModelFactory;
 
 import java.util.List;
 
 public class DetailActivity extends AppCompatActivity {
 
-    private PositionViewModel positionViewModel;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (false) {
-            setContentView(R.layout.activity_detail);
-        } else {
-            ActivityDetailBinding viewDataBinding = DataBindingUtil.setContentView(this, R.layout.activity_detail);
-            Position position = new Position();
-            position.setCompanyLogo("https://cdn-images-1.medium.com/max/800/1*pqS__vR2bkJaPAh4OHP7OQ.png");
 
-            String string = getString(R.string.large_text);
-            string = "hello world cup";
+        _ViewModelFactory factory = _ViewModelFactory.createFactory(this);
 
-            position.setDescription(string);
-            viewDataBinding.setPosition(position);
-        }
-
-//        positionViewModel = ViewModelProviders.of(this).get(PositionViewModel.class);
-//        LiveData<List<Position>> positions = positionViewModel.getPositions();
-//        positions.observe(this, new Observer<List<Position>>() {
-//            @Override
-//            public void onChanged(@Nullable List<Position> positions) {
-//
-//            }
-//        });
+        ActivityDetailBinding viewDataBinding = DataBindingUtil.setContentView(this, R.layout.activity_detail);
+        ViewModelEx viewModel = ViewModelProviders.of(this, factory).get(ViewModelEx.class);
+        viewDataBinding.setJobPostingViewModel(viewModel);
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -54,8 +38,8 @@ public class DetailActivity extends AppCompatActivity {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-//                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-//                        .setAction("Action", null).show();
+                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
+                        .setAction("Action", null).show();
             }
         });
     }

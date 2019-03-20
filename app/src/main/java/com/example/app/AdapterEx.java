@@ -10,11 +10,16 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ProgressBar;
 
+import com.example.app.model.JobPosting;
+import com.example.app.view.ViewModelEx;
+
+import java.util.List;
+
 public class AdapterEx extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     private final int VIEW_TYPE_ITEM = 0;
     private final int VIEW_TYPE_LOADING = 1;
 
-    private PositionViewModel positionViewModel;
+    private ViewModelEx positionViewModel;
 
     // Provide a reference to the views for each data item
     // Complex data items may need more than one view per item, and
@@ -29,7 +34,7 @@ public class AdapterEx extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
         }
 
         public void bind(Object obj) {
-            binding.setVariable(BR.position, obj);
+            binding.setVariable(BR.jobPosting, obj);
             binding.executePendingBindings();
         }
     }
@@ -44,7 +49,7 @@ public class AdapterEx extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     }
 
     // Provide a suitable constructor (depends on the kind of dataset)
-    public AdapterEx(PositionViewModel positionViewModel) {
+    public AdapterEx(ViewModelEx positionViewModel) {
         this.positionViewModel = positionViewModel;
     }
 
@@ -66,9 +71,8 @@ public class AdapterEx extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
-        Position _position;
-        _position = positionViewModel.getPositions().getValue().get(position);
-
+        List<JobPosting> list = positionViewModel.getList().getValue();
+        JobPosting _position = ((list != null) ? list.get(position) : null);
         //Log.d(Config.TAG, "onBindViewHolder - _position: " + _position);
 
         if (holder instanceof ViewHolderEx) {
@@ -84,8 +88,8 @@ public class AdapterEx extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     @Override
     public int getItemCount() {
-        int count;
-        count = positionViewModel.getPositions().getValue().size();
+        List<JobPosting> list = positionViewModel.getList().getValue();
+        int count = ((list != null) ? list.size() : 0);
         return count;
     }
 
@@ -97,7 +101,8 @@ public class AdapterEx extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
      */
     @Override
     public int getItemViewType(int position) {
-        Position _position = positionViewModel.getPositions().getValue().get(position);
+        List<JobPosting> list = positionViewModel.getList().getValue();
+        JobPosting _position = ((list != null) ? list.get(position) : null);
         //Log.d(Config.TAG, "getItemViewType - _position: " + _position);
         return _position == null ? VIEW_TYPE_LOADING : VIEW_TYPE_ITEM;
     }

@@ -7,7 +7,6 @@ import android.arch.persistence.room.OnConflictStrategy;
 import android.arch.persistence.room.Query;
 
 import com.example.app.model.JobPosting;
-import com.example.app.room.Word;
 
 import java.util.List;
 
