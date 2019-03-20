@@ -36,7 +36,7 @@ public class ViewModelEx extends ViewModel implements Observable {
         this.repository = repository;
         List<JobPosting> value = list.getValue();
         if (value == null || value.isEmpty()) {
-            _getList();
+            loadOrFetchList(0);
         }
     }
 
@@ -123,28 +123,30 @@ public class ViewModelEx extends ViewModel implements Observable {
         return list;
     }
 
-    public LiveData<List<JobPosting>> getList(int offset) {
+    public LiveData<List<JobPosting>> loadMoreList(int offset) {
+        loadOrFetchList(offset);
         return list;
     }
 
-    public Flowable<List<JobPosting>> _getList() {
-        Log.d(Config.TAG, "_getList");
-        Flowable<List<JobPosting>> flowable = repository.getList("java", 0);
-        Disposable disposable = flowable.subscribeOn(Schedulers.io()).observeOn(Schedulers.io()).subscribe(next -> {
-            Log.d(Config.TAG, "_getList - next: " + next.size());
-            list.postValue(next);
-            notifyChange();
-//            notifyPropertyChanged(BR.viewModelEx);
+    private Flowable<List<JobPosting>> loadOrFetchList(int offset) {
+        Log.d(Config.TAG, "loadOrFetchList");
+
+        Flowable<List<JobPosting>> flowable = repository.getList("java", offset);
+        Disposable disposable = flowable.subscribeOn(Schedulers.io()).observeOn(Schedulers.io()).subscribe(result -> {
+            Log.d(Config.TAG, "loadOrFetchList - next: " + result.size());
+            list.postValue(result);
+            //notifyChange();
+            //notifyPropertyChanged(BR);
         }, error -> {
-            Log.d(Config.TAG, "_getList - err: " + error.getMessage());
+            Log.d(Config.TAG, "loadOrFetchList - err: " + error.getMessage());
         }, () -> {
-            Log.d(Config.TAG, "_getList - complete");
+            Log.d(Config.TAG, "loadOrFetchList - complete");
         });
+
         compositeDisposable.add(disposable);
+
         return flowable;
     }
-
-
 
 
     @BindingAdapter("imageUrl")

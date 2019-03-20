@@ -77,7 +77,7 @@ public class FragmentEx extends Fragment {
     private void initViewModel() {
         viewModel = ViewModelProviders.of(getActivity()).get(ViewModelEx.class);
 
-        LiveData<List<JobPosting>> positions = viewModel.getList(lastItem);
+        LiveData<List<JobPosting>> positions = viewModel.getList();
         positions.observe(this, new Observer<List<JobPosting>>() {
             @Override
             public void onChanged(@Nullable List<JobPosting> list) {
@@ -108,7 +108,10 @@ public class FragmentEx extends Fragment {
 
                     if (linearLayoutManager != null && linearLayoutManager.findLastCompletelyVisibleItemPosition() == size - 1) {
                         //bottom of list!
-                        loadMore();
+                        recyclerView.post(() -> {
+                            loadMore();
+                        });
+//                        loadMore();
 //                        isLoading = true;
                     }
                 }
@@ -125,7 +128,7 @@ public class FragmentEx extends Fragment {
 
         if (!isLoading) {
             Log.d(Config.TAG, "loadMore - loadMore: " + (lastItem + 1));
-            viewModel.getList(lastItem + 1);
+            viewModel.loadMoreList(lastItem + 1);
             isLoading = true;
         }
     }

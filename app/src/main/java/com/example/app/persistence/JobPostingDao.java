@@ -34,11 +34,11 @@ public interface JobPostingDao {
     void deleteAll();
 
     @Query("SELECT * from job_table LIMIT 1")
-    Maybe<JobPosting> getOne();
+    Maybe<JobPosting> loadOne();
 
     @Query("SELECT * from job_table where id = :id")
-    Maybe<JobPosting> getOne(int id);
+    Maybe<JobPosting> loadOne(int id);
 
     @Query("SELECT * from job_table ORDER BY id ASC")
-    Flowable<List<JobPosting>> getList();
+    Flowable<List<JobPosting>> loadList();
 }
