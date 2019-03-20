@@ -39,7 +39,7 @@ public class _RemoteDataSource {
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl(BASE_URL)
                 .addConverterFactory(GsonConverterFactory.create())
-                .client(OkHttpUtil.get())
+                .client(OkHttpUtil.getClient())
                 .build();
         webService = retrofit.create(_WebService.class);
     }
