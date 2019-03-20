@@ -11,6 +11,9 @@ import java.util.List;
 
 import io.reactivex.BackpressureStrategy;
 import io.reactivex.Flowable;
+import io.reactivex.Maybe;
+import io.reactivex.MaybeEmitter;
+import io.reactivex.MaybeOnSubscribe;
 import io.reactivex.Observable;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -19,8 +22,10 @@ import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
 public class _RemoteDataSource {
+    public static final String BASE_URL = "https://jobs.github.com";
     private _WebService webService;
     private static final int NUM_ITEMS_IN_PAGE = 10;
+
 
     private static class Holder {
         private static _RemoteDataSource INSTANCE = new _RemoteDataSource();
@@ -32,7 +37,7 @@ public class _RemoteDataSource {
 
     private _RemoteDataSource() {
         Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl("https://jobs.github.com")
+                .baseUrl(BASE_URL)
                 .addConverterFactory(GsonConverterFactory.create())
                 .client(OkHttpUtil.get())
                 .build();
@@ -70,5 +75,27 @@ public class _RemoteDataSource {
 
         Flowable<List<JobPosting>> flowable = observable.toFlowable(BackpressureStrategy.BUFFER);
         return flowable;
+    }
+
+    public Maybe<JobPosting> getId(String id) {
+        Maybe<JobPosting> maybe = Maybe.create(new MaybeOnSubscribe<JobPosting>() {
+            @Override
+            public void subscribe(MaybeEmitter<JobPosting> emitter) throws Exception {
+                Call<JobPosting> call = webService.getId(id);
+                call.enqueue(new Callback<JobPosting>() {
+                    @Override
+                    public void onResponse(Call<JobPosting> call, Response<JobPosting> response) {
+                        emitter.onSuccess(response.body());
+                        emitter.onComplete();
+                    }
+
+                    @Override
+                    public void onFailure(Call<JobPosting> call, Throwable t) {
+                        emitter.onError(t);
+                    }
+                });
+            }
+        });
+        return  maybe;
     }
 }

@@ -1,6 +1,7 @@
 package com.example.app.ui.list;
 
 import android.arch.lifecycle.ViewModelProviders;
+import android.content.Intent;
 import android.support.v4.app.FragmentManager;
 import android.databinding.DataBindingUtil;
 
@@ -10,10 +11,11 @@ import android.os.Bundle;
 
 import com.example.app.R;
 import com.example.app.databinding.ActivityListBinding;
+import com.example.app.ui.detail.DetailActivity;
 import com.example.app.viewmodel.ViewModelEx;
 import com.example.app.viewmodel._ViewModelFactory;
 
-public class ListActivity extends AppCompatActivity {
+public class ListActivity extends AppCompatActivity implements InteractionListener {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -29,8 +31,14 @@ public class ListActivity extends AppCompatActivity {
 
         FragmentManager fm = getSupportFragmentManager();
         FragmentTransaction ft = fm.beginTransaction();
-        ft.add(R.id.fragment_container, new FragmentEx());
+        ft.add(R.id.fragment_container, ListFragment.newInstance("", ""));
         ft.commit();
     }
 
+    @Override
+    public void onListItemClick(String id) {
+        Intent intent = new Intent(this, DetailActivity.class);
+        intent.putExtra("id", id);
+        startActivity(intent);
+    }
 }

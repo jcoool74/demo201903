@@ -16,11 +16,12 @@ import com.example.app.viewmodel.ViewModelEx;
 
 import java.util.List;
 
-public class AdapterEx extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
+public class ListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     private final int VIEW_TYPE_ITEM = 0;
     private final int VIEW_TYPE_LOADING = 1;
 
     private ViewModelEx viewModel;
+    private ViewEventListener eventListener;
 
     // Provide a reference to the views for each data item
     // Complex data items may need more than one view per item, and
@@ -50,8 +51,9 @@ public class AdapterEx extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     }
 
     // Provide a suitable constructor (depends on the kind of dataset)
-    public AdapterEx(ViewModelEx viewModel) {
+    public ListAdapter(ViewModelEx viewModel, InteractionListener listener) {
         this.viewModel = viewModel;
+        this.eventListener = new ViewEventListener(listener);
     }
 
     // Create new views (invoked by the layout manager)
@@ -62,6 +64,7 @@ public class AdapterEx extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
             LayoutInflater layoutInflater = LayoutInflater.from(parent.getContext());
             ViewDataBinding binding = DataBindingUtil.inflate(layoutInflater, R.layout.view_holder_layout, parent, false);
             // set the view's size, margins, paddings and layout parameters
+            binding.setVariable(BR.eventListener, eventListener);
             return new ViewHolderEx(binding);
         } else {
             LayoutInflater layoutInflater = LayoutInflater.from(parent.getContext());

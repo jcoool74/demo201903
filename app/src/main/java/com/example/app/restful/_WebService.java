@@ -6,6 +6,7 @@ import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.http.GET;
+import retrofit2.http.Path;
 import retrofit2.http.Query;
 
 /*
@@ -19,4 +20,6 @@ public interface _WebService {
     @GET("positions.json?full_time=true&location=sf&page=1")
     Call<List<JobPosting>> getList(@Query("description") String description);
 
+    @GET("/positions/{id}.json")
+    Call<JobPosting> getId(@Path("id") String id);
 }
