@@ -20,7 +20,7 @@ public class AdapterEx extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     private final int VIEW_TYPE_ITEM = 0;
     private final int VIEW_TYPE_LOADING = 1;
 
-    private ViewModelEx positionViewModel;
+    private ViewModelEx viewModel;
 
     // Provide a reference to the views for each data item
     // Complex data items may need more than one view per item, and
@@ -50,8 +50,8 @@ public class AdapterEx extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     }
 
     // Provide a suitable constructor (depends on the kind of dataset)
-    public AdapterEx(ViewModelEx positionViewModel) {
-        this.positionViewModel = positionViewModel;
+    public AdapterEx(ViewModelEx viewModel) {
+        this.viewModel = viewModel;
     }
 
     // Create new views (invoked by the layout manager)
@@ -72,7 +72,7 @@ public class AdapterEx extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
-        List<JobPosting> list = positionViewModel.getList().getValue();
+        List<JobPosting> list = viewModel.getList().getValue();
         JobPosting _position = ((list != null) ? list.get(position) : null);
         //Log.d(Config.TAG, "onBindViewHolder - _position: " + _position);
 
@@ -89,7 +89,7 @@ public class AdapterEx extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     @Override
     public int getItemCount() {
-        List<JobPosting> list = positionViewModel.getList().getValue();
+        List<JobPosting> list = viewModel.getList().getValue();
         int count = ((list != null) ? list.size() : 0);
         return count;
     }
@@ -102,7 +102,7 @@ public class AdapterEx extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
      */
     @Override
     public int getItemViewType(int position) {
-        List<JobPosting> list = positionViewModel.getList().getValue();
+        List<JobPosting> list = viewModel.getList().getValue();
         JobPosting _position = ((list != null) ? list.get(position) : null);
         //Log.d(Config.TAG, "getItemViewType - _position: " + _position);
         return _position == null ? VIEW_TYPE_LOADING : VIEW_TYPE_ITEM;
