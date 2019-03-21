@@ -12,6 +12,7 @@ import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 import io.reactivex.Flowable;
+import io.reactivex.Maybe;
 import io.reactivex.schedulers.Schedulers;
 
 /*
@@ -26,8 +27,9 @@ public class _Repository {
     private final _RemoteDataSource remoteDataSource;
     private final JobPostingDao dao;
     private final RateLimiter<String> rateLimiter = new RateLimiter<>(10, TimeUnit.MINUTES);
-    private final static String KEY_GET_LIST = "loadList";
 
+    private static final Object KEY_GET_ONE = "KEY_GET_ONE";
+    private final static String KEY_GET_LIST = "KEY_GET_LIST";
 
     public _Repository(_RemoteDataSource remoteDataSource, JobPostingDao dao) {
         this.remoteDataSource = remoteDataSource;
@@ -35,12 +37,31 @@ public class _Repository {
     }
 
     @SuppressLint("CheckResult")
+    public Maybe<JobPosting> getOne(final String id) {
+        String key = KEY_GET_ONE + id;
+
+        dao.loadOne(id).observeOn(Schedulers.io()).observeOn(Schedulers.io()).subscribe(result -> {
+            final boolean shouldFetch = (result == null || rateLimiter.shouldFetch(key));
+            Log.d(Config.TAG, "getOne - shouldFetch: " + shouldFetch + ", result: " + result);
+
+            if (shouldFetch) {
+                fetchOne(id);
+            }
+        }, err -> {
+            rateLimiter.reset(key);
+        }, () -> {
+        });
+
+        return dao.loadOne(id);
+    }
+
+    @SuppressLint("CheckResult")
     public Flowable<List<JobPosting>> getList(String keyword, int offset) {
         String key = KEY_GET_LIST + offset;
 
-        dao.loadList().subscribeOn(Schedulers.io()).observeOn(Schedulers.io()).subscribe(next -> {
-            final boolean shouldFetch = (next == null || next.isEmpty() || rateLimiter.shouldFetch(key));
-            Log.d(Config.TAG, "loadList - shouldFetch: " + shouldFetch + ", key: " + key);
+        dao.loadList().subscribeOn(Schedulers.io()).observeOn(Schedulers.io()).subscribe(result -> {
+            final boolean shouldFetch = (result == null || result.isEmpty() || rateLimiter.shouldFetch(key));
+            Log.d(Config.TAG, "getList - shouldFetch: " + shouldFetch + ", result: " + result);
 
             if (shouldFetch) {
                 fetchList(keyword, offset);
@@ -51,6 +72,20 @@ public class _Repository {
         });
 
         return dao.loadList();
+    }
+
+    @SuppressLint("CheckResult")
+    private void fetchOne(String id) {
+        String key = KEY_GET_ONE + id;
+
+        remoteDataSource.getId(id).subscribeOn(Schedulers.io()).observeOn(Schedulers.io()).subscribe(result -> {
+            final boolean shouldFetch = (result == null || rateLimiter.shouldFetch(key));
+            if (shouldFetch) {
+
+            }
+        }, err -> {
+        }, () -> {
+        });
     }
 
     @SuppressLint("CheckResult")

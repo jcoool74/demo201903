@@ -1,11 +1,13 @@
 package com.example.app.viewmodel;
 
+import android.annotation.SuppressLint;
 import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.MutableLiveData;
 import android.arch.lifecycle.ViewModel;
 import android.databinding.BindingAdapter;
 import android.databinding.Observable;
 import android.databinding.PropertyChangeRegistry;
+import android.text.TextUtils;
 import android.util.Log;
 import android.widget.ImageView;
 
@@ -18,6 +20,7 @@ import com.example.app.repository._Repository;
 import java.util.List;
 
 import io.reactivex.Flowable;
+import io.reactivex.Maybe;
 import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
@@ -28,7 +31,10 @@ https://developer.android.com/topic/libraries/data-binding/architecture
  */
 public class ViewModelEx extends ViewModel implements Observable {
     private _Repository repository;
+
     private MutableLiveData<List<JobPosting>> list = new MutableLiveData<>();
+    private MutableLiveData<JobPosting> one = new MutableLiveData<>();
+
     private PropertyChangeRegistry callbacks = new PropertyChangeRegistry();
     private CompositeDisposable compositeDisposable = new CompositeDisposable();
 
@@ -151,6 +157,20 @@ public class ViewModelEx extends ViewModel implements Observable {
 
     @BindingAdapter("imageUrl")
     public static void loadImage(ImageView imageView, String url) {
+        if (TextUtils.isEmpty(url)) return;
         Glide.with(imageView.getContext()).load(url).apply(RequestOptions.circleCropTransform()).into(imageView);
+    }
+
+    @SuppressLint("CheckResult")
+    public LiveData<JobPosting> getOne(String id) {
+        repository.getOne(id).subscribeOn(Schedulers.io()).observeOn(Schedulers.io()).subscribe(result -> {
+            Log.d(Config.TAG, "getOne : " + result);
+            one.postValue(result);
+        }, err -> {
+            Log.d(Config.TAG, "getOne - err: " + err.getMessage());
+        }, () -> {
+            Log.d(Config.TAG, "getOne - complete");
+        });
+        return one;
     }
 }

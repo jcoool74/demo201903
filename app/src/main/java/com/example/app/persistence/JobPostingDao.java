@@ -37,7 +37,7 @@ public interface JobPostingDao {
     Maybe<JobPosting> loadOne();
 
     @Query("SELECT * from job_table where id = :id")
-    Maybe<JobPosting> loadOne(int id);
+    Maybe<JobPosting> loadOne(String id);
 
     @Query("SELECT * from job_table ORDER BY id ASC")
     Flowable<List<JobPosting>> loadList();
