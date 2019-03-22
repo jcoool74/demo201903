@@ -6,8 +6,8 @@
     <data>
 
         <variable
-            name="jobPosting"
-            type="com.example.app.model.JobPosting" />
+            name="viewModel"
+            type="com.example.app.viewmodel.ViewModelEx" />
 
     </data>
 
@@ -22,7 +22,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="@dimen/text_margin"
-            android:text="@{jobPosting.description}" />
+            android:text="@{viewModel.description}" />
 
     </android.support.v4.widget.NestedScrollView>
 </layout>

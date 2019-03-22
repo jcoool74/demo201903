@@ -7,8 +7,8 @@
     <data>
 
         <variable
-            name="jobPosting"
-            type="com.example.app.model.JobPosting" />
+            name="viewModel"
+            type="com.example.app.viewmodel.ViewModelEx" />
     </data>
 
     <android.support.design.widget.CoordinatorLayout
@@ -39,7 +39,7 @@
                     android:layout_height="match_parent"
                     android:fitsSystemWindows="true"
                     android:scaleType="centerCrop"
-                    app:imageUrl="@{jobPosting.companyLogo}"
+                    app:imageUrl="@{viewModel.companyLogo}"
                     app:layout_collapseMode="parallax" />
 
                 <TextView
@@ -50,7 +50,7 @@
                     android:layout_marginLeft="32dp"
                     android:layout_marginEnd="32dp"
                     android:layout_marginBottom="32dp"
-                    android:text="@{jobPosting.title}"
+                    android:text="@{viewModel.title}"
                     android:textColor="@android:color/white"
                     android:textSize="16sp"
                     android:visibility="gone"
@@ -68,16 +68,16 @@
 
         <include
             layout="@layout/content_detail"
-            bind:jobPosting="@{jobPosting}" />
+            bind:viewModel="@{viewModel}" />
 
         <android.support.design.widget.FloatingActionButton
             android:id="@+id/fab"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="@dimen/fab_margin"
+            android:visibility="gone"
             app:layout_anchor="@id/app_bar"
             app:layout_anchorGravity="bottom|end"
-            android:visibility="gone"
             app:srcCompat="@android:drawable/ic_dialog_email" />
 
     </android.support.design.widget.CoordinatorLayout>

@@ -37,15 +37,16 @@ public class DetailActivity extends AppCompatActivity {
             public void onChanged(@Nullable JobPosting _jobPosting) {
                 Log.d(TAG, "onChanged: " + _jobPosting);
                 if (_jobPosting == null) return;
-                viewDataBinding.setJobPosting(_jobPosting);
+                Log.d(TAG, "onChanged: " + _jobPosting.getTitle());
                 getSupportActionBar().setTitle(_jobPosting.getTitle());
             }
         });
 
+        viewDataBinding.setViewModel(viewModel);
+        viewDataBinding.setLifecycleOwner(this);
+
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        Log.d(TAG, "toolbar: " + toolbar);
         setSupportActionBar(toolbar);
-        Log.d(TAG, "getSupportActionBar: " + getSupportActionBar());
         getSupportActionBar().setTitle("");
     }
 

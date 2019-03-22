@@ -4,6 +4,7 @@ import android.annotation.SuppressLint;
 import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.MutableLiveData;
 import android.arch.lifecycle.ViewModel;
+import android.databinding.Bindable;
 import android.databinding.BindingAdapter;
 import android.databinding.Observable;
 import android.databinding.PropertyChangeRegistry;
@@ -13,6 +14,7 @@ import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
+import com.example.app.BR;
 import com.example.app.util.Config;
 import com.example.app.model.JobPosting;
 import com.example.app.repository._Repository;
@@ -20,7 +22,7 @@ import com.example.app.repository._Repository;
 import java.util.List;
 
 import io.reactivex.Flowable;
-import io.reactivex.Maybe;
+import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
@@ -80,48 +82,47 @@ public class ViewModelEx extends ViewModel implements Observable {
         callbacks.notifyCallbacks(this, fieldId, null);
     }
 
-    public String getName() {
-        String result = "getName";
-        List<JobPosting> value = list.getValue();
-        if (value != null && !value.isEmpty()) {
-            JobPosting jobPosting = value.get(0);
-            result = jobPosting.getCompany();
+    @Bindable
+    public String getTitle() {
+        String result = "getTitle";
+        JobPosting value = one.getValue();
+        if (value != null) {
+            result = value.getTitle();
         }
-        Log.d(Config.TAG, "getName: " + result);
+        Log.d(Config.TAG, "getTitle: " + result);
         return result;
     }
 
+    @Bindable
     public String getCompany() {
         String result = "getCompany";
-        List<JobPosting> value = list.getValue();
-        if (value != null && !value.isEmpty()) {
-            JobPosting jobPosting = value.get(0);
-            result = jobPosting.getCompany();
+        JobPosting value = one.getValue();
+        if (value != null) {
+            result = value.getCompany();
         }
         Log.d(Config.TAG, "getCompany: " + result);
         return result;
     }
 
+    @Bindable
     public String getDescription() {
         String result = "getDescription";
-        List<JobPosting> value = list.getValue();
-        if (value != null && !value.isEmpty()) {
-            JobPosting jobPosting = value.get(0);
-            result = jobPosting.getDescription();
+        JobPosting value = one.getValue();
+        if (value != null) {
+            result = value.getDescription();
         }
         Log.d(Config.TAG, "getDescription: " + result);
         return result;
     }
 
+    @Bindable
     public String getCompanyLogo() {
-        //companyLogo
-        String result = "https://cdn-images-1.medium.com/max/800/1*pqS__vR2bkJaPAh4OHP7OQ.png";
-        List<JobPosting> value = list.getValue();
-        if (value != null && !value.isEmpty()) {
-            JobPosting jobPosting = value.get(0);
-            result = jobPosting.getCompanyLogo();
+        String result = null;
+        JobPosting value = one.getValue();
+        if (value != null) {
+            result = value.getCompanyLogo();
         }
-        Log.d(Config.TAG, "getDescription: " + result);
+        Log.d(Config.TAG, "getCompanyLogo: " + result);
         return result;
     }
 
@@ -138,11 +139,10 @@ public class ViewModelEx extends ViewModel implements Observable {
         Log.d(Config.TAG, "loadOrFetchList");
 
         Flowable<List<JobPosting>> flowable = repository.getList("java", offset);
-        Disposable disposable = flowable.subscribeOn(Schedulers.io()).observeOn(Schedulers.io()).subscribe(result -> {
+        Disposable disposable = flowable.subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe(result -> {
             Log.d(Config.TAG, "loadOrFetchList - next: " + result.size());
-            list.postValue(result);
-            //notifyChange();
-            //notifyPropertyChanged(BR);
+            list.setValue(result);
+            notifyChange();
         }, error -> {
             Log.d(Config.TAG, "loadOrFetchList - err: " + error.getMessage());
         }, () -> {
@@ -154,7 +154,6 @@ public class ViewModelEx extends ViewModel implements Observable {
         return flowable;
     }
 
-
     @BindingAdapter("imageUrl")
     public static void loadImage(ImageView imageView, String url) {
         if (TextUtils.isEmpty(url)) return;
@@ -163,9 +162,10 @@ public class ViewModelEx extends ViewModel implements Observable {
 
     @SuppressLint("CheckResult")
     public LiveData<JobPosting> getOne(String id) {
-        repository.getOne(id).subscribeOn(Schedulers.io()).observeOn(Schedulers.io()).subscribe(result -> {
+        repository.getOne(id).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe(result -> {
             Log.d(Config.TAG, "getOne : " + result);
-            one.postValue(result);
+            one.setValue(result);
+            notifyChange();
         }, err -> {
             Log.d(Config.TAG, "getOne - err: " + err.getMessage());
         }, () -> {

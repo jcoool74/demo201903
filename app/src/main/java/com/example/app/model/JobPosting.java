@@ -12,7 +12,7 @@ import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
-//import com.example.app.BR;
+import com.example.app.BR;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
@@ -140,7 +140,7 @@ public class JobPosting extends BaseObservable {
 
     public void setCompany(String company) {
         this.company = company;
-//        notifyPropertyChanged(BR.company);
+        notifyPropertyChanged(BR.company);
     }
 
     public String getCompanyUrl() {
@@ -166,6 +166,7 @@ public class JobPosting extends BaseObservable {
 
     public void setTitle(String title) {
         this.title = title;
+        notifyPropertyChanged(BR.title);
     }
 
     @Bindable
@@ -175,6 +176,7 @@ public class JobPosting extends BaseObservable {
 
     public void setDescription(String description) {
         this.description = description;
+        notifyPropertyChanged(BR.description);
     }
 
     public String getHowToApply() {
@@ -192,6 +194,7 @@ public class JobPosting extends BaseObservable {
 
     public void setCompanyLogo(String companyLogo) {
         this.companyLogo = companyLogo;
+        notifyPropertyChanged(BR.companyLogo);
     }
 
     @BindingAdapter("imageUrl")
