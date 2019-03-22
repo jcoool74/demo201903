@@ -26,9 +26,6 @@ public class DetailActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
-
         String id = getIntent().getStringExtra("id");
 
         _ViewModelFactory factory = _ViewModelFactory.createFactory(this);
@@ -41,10 +38,15 @@ public class DetailActivity extends AppCompatActivity {
                 Log.d(TAG, "onChanged: " + _jobPosting);
                 if (_jobPosting == null) return;
                 viewDataBinding.setJobPosting(_jobPosting);
+                getSupportActionBar().setTitle(_jobPosting.getTitle());
             }
         });
 
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        Log.d(TAG, "toolbar: " + toolbar);
+        setSupportActionBar(toolbar);
         Log.d(TAG, "getSupportActionBar: " + getSupportActionBar());
+        getSupportActionBar().setTitle("");
     }
 
     private void initFab() {
