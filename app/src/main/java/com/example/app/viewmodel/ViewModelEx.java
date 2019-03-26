@@ -44,7 +44,7 @@ public class ViewModelEx extends ViewModel implements Observable {
         this.repository = repository;
         List<JobPosting> value = list.getValue();
         if (value == null || value.isEmpty()) {
-            loadOrFetchList(0);
+//            loadOrFetchList(0);
         }
     }
 
@@ -135,13 +135,17 @@ public class ViewModelEx extends ViewModel implements Observable {
         return list;
     }
 
-    private Flowable<List<JobPosting>> loadOrFetchList(int offset) {
+    private void loadOrFetchList(int offset) {
         Log.d(Config.TAG, "loadOrFetchList");
 
         Flowable<List<JobPosting>> flowable = repository.getList("java", offset);
         Disposable disposable = flowable.subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe(result -> {
             Log.d(Config.TAG, "loadOrFetchList - next: " + result.size());
+            Log.d(Config.TAG_SPECIAL, "1111-" + System.currentTimeMillis() + "-notify-ui");
+
+            // notify the observer
             list.setValue(result);
+            // update the UI as well
             notifyChange();
         }, error -> {
             Log.d(Config.TAG, "loadOrFetchList - err: " + error.getMessage());
@@ -149,9 +153,8 @@ public class ViewModelEx extends ViewModel implements Observable {
             Log.d(Config.TAG, "loadOrFetchList - complete");
         });
 
+//        Log.d(Config.TAG_SPECIAL, "1111");
         compositeDisposable.add(disposable);
-
-        return flowable;
     }
 
     @BindingAdapter("imageUrl")

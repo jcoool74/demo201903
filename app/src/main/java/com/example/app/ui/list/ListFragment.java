@@ -102,6 +102,8 @@ public class ListFragment extends Fragment {
         initViewModel();
         initRecyclerView(view);
         initScrollListener();
+
+        viewModel.loadMoreList(0);
     }
 
     @Override

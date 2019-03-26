@@ -62,14 +62,19 @@ public class _Repository {
         dao.loadList().subscribeOn(Schedulers.io()).observeOn(Schedulers.io()).subscribe(result -> {
             final boolean shouldFetch = (result == null || result.isEmpty() || rateLimiter.shouldFetch(key));
             Log.d(Config.TAG, "getList - shouldFetch: " + shouldFetch + ", result: " + result);
+            Log.d(Config.TAG_SPECIAL, "2222-try-to-fetch");
 
             if (shouldFetch) {
-                fetchList(keyword, offset);
+                // this is an action for next time use
+                fetchAndSaveList(keyword, offset);
             }
         }, error -> {
             rateLimiter.reset(key);
         }, () -> {
         });
+
+
+        Log.d(Config.TAG_SPECIAL, "0000-started");
 
         return dao.loadList();
     }
@@ -81,7 +86,7 @@ public class _Repository {
         remoteDataSource.getId(id).subscribeOn(Schedulers.io()).observeOn(Schedulers.io()).subscribe(result -> {
             final boolean shouldFetch = (result == null || rateLimiter.shouldFetch(key));
             if (shouldFetch) {
-
+                // TODO: fetch and save individual item
             }
         }, err -> {
         }, () -> {
@@ -89,29 +94,31 @@ public class _Repository {
     }
 
     @SuppressLint("CheckResult")
-    private void fetchList(String key, int offset) {
+    private void fetchAndSaveList(String key, int offset) {
         remoteDataSource.getList(key, offset).subscribeOn(Schedulers.io()).observeOn(Schedulers.io()).subscribe(result -> {
             try {
-                Log.d(Config.TAG, "fetchList - from remoteDataSource: " + result.size());
+                Log.d(Config.TAG, "fetchAndSaveList - from remoteDataSource: " + result.size());
                 saveList(result);
                 checkSaved();
             } catch (Exception e) {
                 e.printStackTrace();
-                Log.d(Config.TAG, "fetchList - e", e);
+                Log.d(Config.TAG, "fetchAndSaveList - e", e);
             }
         }, err -> {
-            Log.d(Config.TAG, "fetchList - err", err);
+            Log.d(Config.TAG, "fetchAndSaveList - err", err);
         }, () -> {
-            Log.d(Config.TAG, "fetchList - complete");
+            Log.d(Config.TAG, "fetchAndSaveList - complete");
         });
     }
 
     private void saveList(List<JobPosting> result) {
         dao.insert(result);
+        Log.d(Config.TAG_SPECIAL, "3333-save");
     }
 
     @SuppressLint("CheckResult")
     private void checkSaved() {
+        // This is just for logging
         Flowable<List<JobPosting>> flowable = dao.loadList();
         flowable.subscribeOn(Schedulers.io()).observeOn(Schedulers.io()).subscribe(result -> {
             Log.d(Config.TAG, "checkSaved - result: " + result.size());

@@ -1,13 +1,24 @@
 package com.example.app;
 
-import android.content.Context;
-import android.support.test.InstrumentationRegistry;
-import android.support.test.runner.AndroidJUnit4;
+        import android.arch.persistence.room.Room;
+        import android.content.Context;
+        import android.support.test.InstrumentationRegistry;
+        import android.support.test.runner.AndroidJUnit4;
 
-import org.junit.Test;
-import org.junit.runner.RunWith;
+        import com.example.app.model.JobPosting;
+        import com.example.app.persistence._Database;
 
-import static org.junit.Assert.*;
+        import org.junit.After;
+        import org.junit.Before;
+        import org.junit.Test;
+        import org.junit.runner.RunWith;
+
+        import io.reactivex.Maybe;
+        import io.reactivex.android.schedulers.AndroidSchedulers;
+        import io.reactivex.schedulers.Schedulers;
+
+        import static org.junit.Assert.*;
+        import static org.junit.Assert.assertEquals;
 
 /**
  * Instrumented test, which will execute on an Android device.
@@ -20,7 +31,6 @@ public class ExampleInstrumentedTest {
     public void useAppContext() {
         // Context of the app under test.
         Context appContext = InstrumentationRegistry.getTargetContext();
-
         assertEquals("com.example.app", appContext.getPackageName());
     }
 }

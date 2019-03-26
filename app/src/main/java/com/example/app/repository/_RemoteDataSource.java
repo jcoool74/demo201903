@@ -15,6 +15,7 @@ import io.reactivex.Maybe;
 import io.reactivex.MaybeEmitter;
 import io.reactivex.MaybeOnSubscribe;
 import io.reactivex.Observable;
+import io.reactivex.ObservableEmitter;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -47,34 +48,48 @@ public class _RemoteDataSource {
     public Flowable<List<JobPosting>> getList(String key, int offset) {
         Observable<List<JobPosting>> observable = Observable.create(emitter -> {
             Call<List<JobPosting>> call = webService.getList(key);
-            call.enqueue(new Callback<List<JobPosting>>() {
-                @Override
-                public void onResponse(Call<List<JobPosting>> call, Response<List<JobPosting>> response) {
-                    List<JobPosting> listSrc = response.body();
-                    //Log.d(Config.TAG, "onResponse - emitter - listSrc size: " + listSrc.size());
-
-                    if (!listSrc.isEmpty()) {
-                        JobPosting posting = listSrc.get(0);
-                        String companyLogo = posting.getCompanyLogo();
-                        //Log.d(Config.TAG, "companyLogo: " + companyLogo);
+            if (false) {
+                call.enqueue(new Callback<List<JobPosting>>() {
+                    @Override
+                    public void onResponse(Call<List<JobPosting>> call, Response<List<JobPosting>> response) {
+                        List<JobPosting> listSrc = response.body();
+                        //Log.d(Config.TAG, "onResponse - emitter - listSrc size: " + listSrc.size());
+                        getListInternal(listSrc, offset, emitter);
                     }
 
-                    int size = Math.min(listSrc.size(), (offset + NUM_ITEMS_IN_PAGE));
-                    Log.d(Config.TAG, "start: " + offset + ", end: " + size);
-                    emitter.onNext(listSrc.subList(0, size));
-                    emitter.onComplete();
+                    @Override
+                    public void onFailure(Call<List<JobPosting>> call, Throwable t) {
+                        Log.d(Config.TAG, "onFailure - emitter: " + t.getMessage());
+                        emitter.onError(t);
+                    }
+                });
+            } else {
+                try {
+                    Response<List<JobPosting>> execute = call.execute();
+                    List<JobPosting> list = execute.body();
+                    getListInternal(list, offset, emitter);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    emitter.onError(e);
                 }
-
-                @Override
-                public void onFailure(Call<List<JobPosting>> call, Throwable t) {
-                    Log.d(Config.TAG, "onFailure - emitter: " + t.getMessage());
-                    emitter.onError(t);
-                }
-            });
+            }
         });
 
         Flowable<List<JobPosting>> flowable = observable.toFlowable(BackpressureStrategy.BUFFER);
         return flowable;
+    }
+
+    private void getListInternal(List<JobPosting> listSrc, int offset, ObservableEmitter<List<JobPosting>> emitter) {
+        if (!listSrc.isEmpty()) {
+            JobPosting posting = listSrc.get(0);
+            String companyLogo = posting.getCompanyLogo();
+            //Log.d(Config.TAG, "companyLogo: " + companyLogo);
+        }
+
+        int size = Math.min(listSrc.size(), (offset + NUM_ITEMS_IN_PAGE));
+        Log.d(Config.TAG, "start: " + offset + ", end: " + size);
+        emitter.onNext(listSrc.subList(0, size));
+        emitter.onComplete();
     }
 
     public Maybe<JobPosting> getId(String id) {
@@ -96,6 +111,8 @@ public class _RemoteDataSource {
                 });
             }
         });
-        return  maybe;
+        return maybe;
     }
+
+
 }
