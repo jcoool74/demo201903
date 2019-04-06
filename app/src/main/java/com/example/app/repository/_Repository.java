@@ -11,6 +11,8 @@ import com.example.app.util.RateLimiter;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
+import javax.inject.Inject;
+
 import io.reactivex.Flowable;
 import io.reactivex.Maybe;
 import io.reactivex.schedulers.Schedulers;
@@ -24,8 +26,11 @@ https://github.com/googlesamples/android-architecture-components/blob/master/Git
 https://github.com/googlesamples/android-architecture-components/blob/master/GithubBrowserSample/app/src/main/java/com/android/example/github/repository/RepoRepository.kt
  */
 public class _Repository {
-    private final _RemoteDataSource remoteDataSource;
-    private final JobPostingDao dao;
+    @Inject
+    _RemoteDataSource remoteDataSource;
+    @Inject
+    JobPostingDao dao;
+
     private final RateLimiter<String> rateLimiter = new RateLimiter<>(10, TimeUnit.MINUTES);
 
     private static final Object KEY_GET_ONE = "KEY_GET_ONE";
