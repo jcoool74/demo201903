@@ -1,6 +1,7 @@
 apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
+apply plugin: 'kotlin-kapt'
 
 android {
     compileSdkVersion 27
@@ -72,10 +73,15 @@ dependencies {
     annotationProcessor "android.arch.persistence.room:compiler:1.1.1"
     androidTestImplementation "android.arch.persistence.room:testing:1.1.1"
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
+    kapt "android.arch.persistence.room:compiler:1.1.1"
 
     // DI
-        compile 'com.google.dagger:dagger:2.21'
+    implementation 'com.google.dagger:dagger:2.21'
     annotationProcessor 'com.google.dagger:dagger-compiler:2.21'
+
+//    kapt 'com.android.databinding:compiler:3.3.2'
+//    kapt "androidx.databinding:databinding-compiler:3.3.2-alpha16"
+
 }
 
 // https://github.com/jcoool74/demo201903

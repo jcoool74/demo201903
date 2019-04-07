@@ -2,10 +2,10 @@ package com.example.app.repository;
 
 import android.util.Log;
 
-import com.example.app.util.Config;
-import com.example.app.restful.OkHttpUtil;
 import com.example.app.model.JobPosting;
+import com.example.app.restful.OkHttpUtil;
 import com.example.app.restful._WebService;
+import com.example.app.util.Config;
 
 import java.util.List;
 
@@ -22,25 +22,25 @@ import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
-public class _RemoteDataSource {
+public class _RemoteDataSource_ {
     public static final String BASE_URL = "https://jobs.github.com";
     private _WebService webService;
     private static final int NUM_ITEMS_IN_PAGE = 10;
 
 
     private static class Holder {
-        private static _RemoteDataSource INSTANCE = new _RemoteDataSource();
+        private static _RemoteDataSource_ INSTANCE = new _RemoteDataSource_();
     }
 
-    public static _RemoteDataSource getInstance() {
-        return _RemoteDataSource.Holder.INSTANCE;
+    public static _RemoteDataSource_ getInstance() {
+        return _RemoteDataSource_.Holder.INSTANCE;
     }
 
-    private _RemoteDataSource() {
+    private _RemoteDataSource_() {
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl(BASE_URL)
                 .addConverterFactory(GsonConverterFactory.create())
-                .client(OkHttpUtil.getClient())
+                .client(OkHttpUtil.INSTANCE.getClient())
                 .build();
         webService = retrofit.create(_WebService.class);
     }

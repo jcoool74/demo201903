@@ -1,20 +1,19 @@
-package com.example.app.model;
+package com.example.app.model
 
-import android.arch.persistence.room.ColumnInfo;
-import android.arch.persistence.room.Entity;
-import android.arch.persistence.room.PrimaryKey;
-import android.databinding.BaseObservable;
-import android.databinding.Bindable;
-import android.databinding.BindingAdapter;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-import android.widget.ImageView;
+import android.arch.persistence.room.ColumnInfo
+import android.arch.persistence.room.Entity
+import android.arch.persistence.room.PrimaryKey
+import android.databinding.BaseObservable
+import android.databinding.Bindable
+import android.databinding.BindingAdapter
+import android.widget.ImageView
 
-import com.bumptech.glide.Glide;
-import com.bumptech.glide.request.RequestOptions;
-import com.example.app.BR;
-import com.google.gson.annotations.Expose;
-import com.google.gson.annotations.SerializedName;
+import com.bumptech.glide.Glide
+import com.bumptech.glide.request.RequestOptions
+import com.example.app.BR
+//import com.example.app.BR
+import com.google.gson.annotations.Expose
+import com.google.gson.annotations.SerializedName
 
 /*
   {
@@ -32,174 +31,89 @@ import com.google.gson.annotations.SerializedName;
   },
  */
 @Entity(tableName = "job_table")
-public class JobPosting extends BaseObservable {
+class JobPosting : BaseObservable() {
 
     @SerializedName("id")
     @Expose
     @PrimaryKey
-    @NonNull
     @ColumnInfo(name = "id")
-    private String id;
+    var id: String = ""
 
     @SerializedName("type")
     @Expose
-    @Nullable
     @ColumnInfo(name = "type")
-    private String type;
+    var type: String? = null
 
     @SerializedName("url")
     @Expose
-    @Nullable
     @ColumnInfo(name = "url")
-    private String url;
+    var url: String? = null
 
     @SerializedName("created_at")
     @Expose
-    @Nullable
     @ColumnInfo(name = "createdAt")
-    private String createdAt;
+    var createdAt: String? = null
 
     @SerializedName("company")
     @Expose
-    @Nullable
     @ColumnInfo(name = "company")
-    private String company;
+    @get:Bindable
+    var company: String? = null
+        set(company) {
+            field = company
+            notifyPropertyChanged(BR.company)
+        }
 
     @SerializedName("company_url")
     @Expose
-    @Nullable
     @ColumnInfo(name = "companyUrl")
-    private String companyUrl;
+    var companyUrl: String? = null
 
     @SerializedName("location")
     @Expose
-    @Nullable
     @ColumnInfo(name = "location")
-    private String location;
+    var location: String? = null
 
     @SerializedName("title")
     @Expose
-    @Nullable
     @ColumnInfo(name = "title")
-    private String title;
+    @get:Bindable
+    var title: String? = null
+        set(title) {
+            field = title
+            notifyPropertyChanged(BR.title)
+        }
 
     @SerializedName("description")
     @Expose
-    @Nullable
     @ColumnInfo(name = "description")
-    private String description;
+    @get:Bindable
+    var description: String? = null
+        set(description) {
+            field = description
+            notifyPropertyChanged(BR.description)
+        }
 
     @SerializedName("how_to_apply")
     @Expose
-    @Nullable
     @ColumnInfo(name = "howToApply")
-    private String howToApply;
+    var howToApply: String? = null
 
     @SerializedName("company_logo")
     @Expose
-    @Nullable
     @ColumnInfo(name = "company_logo")
-    private String companyLogo;
+    @get:Bindable
+    var companyLogo: String? = null
+        set(companyLogo) {
+            field = companyLogo
+            notifyPropertyChanged(BR.companyLogo)
+        }
 
-    public String getId() {
-        return id;
-    }
-
-    public void setId(String id) {
-        this.id = id;
-    }
-
-    public String getType() {
-        return type;
-    }
-
-    public void setType(String type) {
-        this.type = type;
-    }
-
-    public String getUrl() {
-        return url;
-    }
-
-    public void setUrl(String url) {
-        this.url = url;
-    }
-
-    public String getCreatedAt() {
-        return createdAt;
-    }
-
-    public void setCreatedAt(String createdAt) {
-        this.createdAt = createdAt;
-    }
-
-    @Bindable
-    public String getCompany() {
-        return company;
-    }
-
-    public void setCompany(String company) {
-        this.company = company;
-        notifyPropertyChanged(BR.company);
-    }
-
-    public String getCompanyUrl() {
-        return companyUrl;
-    }
-
-    public void setCompanyUrl(String companyUrl) {
-        this.companyUrl = companyUrl;
-    }
-
-    public String getLocation() {
-        return location;
-    }
-
-    public void setLocation(String location) {
-        this.location = location;
-    }
-
-    @Bindable
-    public String getTitle() {
-        return title;
-    }
-
-    public void setTitle(String title) {
-        this.title = title;
-        notifyPropertyChanged(BR.title);
-    }
-
-    @Bindable
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-        notifyPropertyChanged(BR.description);
-    }
-
-    public String getHowToApply() {
-        return howToApply;
-    }
-
-    public void setHowToApply(String howToApply) {
-        this.howToApply = howToApply;
-    }
-
-    @Bindable
-    public String getCompanyLogo() {
-        return companyLogo;
-    }
-
-    public void setCompanyLogo(String companyLogo) {
-        this.companyLogo = companyLogo;
-        notifyPropertyChanged(BR.companyLogo);
-    }
-
-    @BindingAdapter("imageUrl")
-    public static void loadImage(ImageView imageView, String url) {
-        Glide.with(imageView.getContext()).load(url).apply(RequestOptions.circleCropTransform()).into(imageView);
-    }
+//    companion object {
+//        @BindingAdapter("app:imageUrl")
+//        fun imageUrl(imageView: ImageView, url: String) {
+//            Glide.with(imageView.context).load(url).apply(RequestOptions.circleCropTransform()).into(imageView)
+//        }
+//    }
 
 }

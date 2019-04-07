@@ -3,9 +3,9 @@ package com.example.app.repository;
 import android.annotation.SuppressLint;
 import android.util.Log;
 
-import com.example.app.util.Config;
 import com.example.app.model.JobPosting;
-import com.example.app.persistence.JobPostingDao;
+import com.example.app.persistence._Dao;
+import com.example.app.util.Config;
 import com.example.app.util.RateLimiter;
 
 import java.util.List;
@@ -25,18 +25,18 @@ RateLimiter
 https://github.com/googlesamples/android-architecture-components/blob/master/GithubBrowserSample/app/src/main/java/com/android/example/github/util/RateLimiter.kt
 https://github.com/googlesamples/android-architecture-components/blob/master/GithubBrowserSample/app/src/main/java/com/android/example/github/repository/RepoRepository.kt
  */
-public class _Repository {
-    @Inject
+public class _Repository_ {
+//    @Inject
     _RemoteDataSource remoteDataSource;
-    @Inject
-    JobPostingDao dao;
+//    @Inject
+    _Dao dao;
 
     private final RateLimiter<String> rateLimiter = new RateLimiter<>(10, TimeUnit.MINUTES);
 
     private static final Object KEY_GET_ONE = "KEY_GET_ONE";
     private final static String KEY_GET_LIST = "KEY_GET_LIST";
 
-    public _Repository(_RemoteDataSource remoteDataSource, JobPostingDao dao) {
+    public _Repository_(_RemoteDataSource remoteDataSource, _Dao dao) {
         this.remoteDataSource = remoteDataSource;
         this.dao = dao;
     }
